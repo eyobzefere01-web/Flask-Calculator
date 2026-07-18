@@ -1,0 +1,39 @@
+{% extends 'libs/base.html' %}
+
+{% block title %}Export{% endblock %}
+{% block icon %}<link rel="icon" href="{{ url_for('static', filename='ico/file_export_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" type="image/svg">{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='style/export.css') }}">{% endblock %}
+{% block main %}
+  <form action="/export" method="post">
+    <p>Export</p>
+    <fieldset>
+      <legend>File Format</legend>
+      <label>
+        <input type="checkbox" name="html" value="html"><span></span>Html <br>
+      </label>
+      <label>
+        <input type="checkbox" name="csv" value="csv"><span></span>Csv <br>
+      </label>
+      <label>
+        <input type="checkbox" name="excel" value="excel"><span></span>Excel <br><br><br>
+      </label>
+      <label>
+        Rename: <input type="text" placeholder="Write only the name don't include the file extension!" name="rename" style="
+        width: 150px;
+        background-color:antiquewhite; 
+        font-size: 0.85rem; 
+        font-family:'Courier New', 
+        Courier, monospace; 
+        height: 35px; 
+        padding:1px;
+        border-radius: 5px">
+      </label>
+      <label>
+        <input type="submit" value="Download" class="submit">
+      </label>
+      <p class="msg">{{ done }}</p>
+    </fieldset>
+  </form>
+
+  <script type="module" src="{{ url_for('static', filename='js/libs/export_.js') }}"></script>
+{% endblock %}

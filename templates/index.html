@@ -1,0 +1,51 @@
+{% extends 'libs/base.html' %}
+
+{% block icon %}<link rel="icon" href="{{ url_for('static', filename='ico/icons8-calculator-100.png') }}" type="image/png">{% endblock %}
+{% block title %}Calculator{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}">{% endblock %}
+{% block main %}
+
+  <!-- God -->
+  <div class="main-container">
+
+      <!-- head -->
+    <div class="header-container">
+
+      <img id="menu-toggle" src="{{ url_for('static', filename='ico/menu_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="menu bar">
+      <ul class="main-header" id="main-header">
+        <ul class="his-header">
+          <a href="{{ url_for('history_page') }}">History</a>
+        </ul>
+        <li><a href="{{ url_for('export_page') }}">Export</a></li>
+      </ul>
+    </div>
+
+    <!-- display -->
+    <div class="display-container"><input type="text" name="display" id="display" readonly></div>
+
+    <!-- calculator -->
+    <div class="calculator-container">
+      <button class="nBtn" onclick="app.nBtn('1')">1</button>
+      <button class="nBtn" onclick="app.nBtn('2')">2</button>
+      <button class="nBtn" onclick="app.nBtn('3')">3</button>
+      <button class="oBtn" onclick="app.oBtn('+')">+</button>
+      <button class="nBtn" onclick="app.nBtn('4')">4</button>
+      <button class="nBtn" onclick="app.nBtn('5')">5</button>
+      <button class="nBtn" onclick="app.nBtn('6')">6</button>
+      <button class="oBtn" onclick="app.oBtn('-')">-</button>
+      <button class="nBtn" onclick="app.nBtn('7')">7</button>
+      <button class="nBtn" onclick="app.nBtn('8')">8</button>
+      <button class="nBtn" onclick="app.nBtn('9')">9</button>
+      <button class="oBtn" onclick="app.oBtn('*')">*</button>
+      <button class="nBtn" onclick="app.nBtn('.')">.</button>
+      <button class="nBtn" onclick="app.nBtn('0')">0</button>
+      <button class="pcBtn" onclick="app.pcBtn()">CE</button>
+      <button class="oBtn" onclick="app.oBtn('/')">/</button>
+      <button class="hBtn" onclick="app.hBtn()"><img src="{{ url_for('static', filename='ico/history_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="history"></button>
+      <button class="nBtn" onclick="app.eBtn()"><img src="{{ url_for('static', filename='ico/file_export_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="export"></button>
+      <button class="fcBtn" onclick="app.fcBtn()">C</button>
+      <button class="rBtn" onclick="app.rBtn()">=</button>
+    </div>
+  </div>
+  <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'libs/base.html' %}
+{% block title %}History{% endblock %}
+{% block css %} <link rel="stylesheet" href="{{ url_for('static', filename='style/history.css') }}">{% endblock %}
+{% block icon %} <link rel="icon" href="{{ url_for('static', filename='ico/history_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" type="image/svg">{% endblock %}
+{% block main %}
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>arguments</th>
+        <th>result</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rows in datas %}
+        <tr>
+          {% for data in rows %}
+            <td>{{data}}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    //Go back in the previous page
+  document.addEventListener('keydown', function (event) {
+    if (event.altKey && event.key === 'ArrowLeft') {
+      event.preventDefault();
+      window.history.back();
+    }
+  });
+  </script>
+{% endblock %}

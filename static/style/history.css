@@ -1,0 +1,28 @@
+table{
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-rows: 5fr 95fr;
+}
+
+thead tr, tbody tr{
+  display: grid;
+  grid-template-columns: 50px repeat(2, 1fr);
+  place-items: center;
+  height: 5vh;
+  font-family: 'Fira Code';
+  font-weight: 900;
+  border: 0.5px dashed rgb(70, 69, 69);
+}
+
+thead tr{
+  background-color: rgba(106, 105, 105, 0.574);
+  color: black;
+}
+
+tbody tr{
+  font-size: 0.7rem;
+  font-weight: 500;
+  overflow-y: auto;
+  white-space: nowrap;
+}

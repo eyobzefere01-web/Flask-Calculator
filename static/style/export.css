@@ -1,0 +1,57 @@
+*{
+  font-family: monospace;
+}
+
+form{
+  display: grid;
+  height: 100vh;
+  width: 100vw;
+  grid-template-rows: 25fr 75fr;
+}
+
+form p{
+  display: flex;
+  font-size: 3rem;
+  font-weight: 900;
+  justify-content: center;
+  align-items: center;
+}
+
+fieldset{
+  border: 0.5px dashed rgb(105, 104, 102);
+  padding: 50px;
+}
+
+span{
+  margin-left: 10px;
+  line-height: 45px;
+}
+
+.submit{
+  width: 56.63px;
+  height: 35px;
+  background-color: rgb(61, 177, 226);
+  color: rgb(213, 56, 21);
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 1s;
+}
+
+.submit:hover{
+  background-color: rgb(10, 24, 31);
+  color: rgb(96, 236, 20);
+  box-shadow:0.5px 0.5px rgb(153, 51, 51),
+            -0.1em 0 0.2em rgb(105, 33, 33);
+}
+
+.submit:active{
+  background-color: red;
+  color: rgb(133, 132, 132);
+}
+
+.msg{
+  font-size: 0.9rem;
+  color: rgb(17, 252, 9);
+}

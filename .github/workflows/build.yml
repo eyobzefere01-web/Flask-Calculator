@@ -1,0 +1,85 @@
+name: Build for Multi-Platform Desktop
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers when you push a version tag like v1.0.0
+
+jobs:
+
+  # Compile it using nutika
+  build-desktop:
+    name: Build Desktop (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Linux needs essential tools and GUI system library headers to compile pywebview and Nuitka
+      - name: Install Linux GUI Compilation Dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgtk-3-dev \
+            libwebkit2gtk-4.1-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            gobject-introspection \
+            libgirepository-2.0-dev
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nuitka pywebview
+
+      # Compiles Windows .exe (with --assume-yes-for-download to prevent terminal hanging)
+      - name: Compile with Nuitka (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          python -m nuitka --standalone --onefile --assume-yes-for-download --include-package=flask --include-package=werkzeug --include-package=jinja2 --include-package=click --include-package=itsdangerous --include-package=blinker --include-data-dir=templates=templates --include-data-dir=static=static --include-data-dir=logics=logics GUI.py
+      # Compiles Linux Standalone Binary
+      - name: Compile with Nuitka (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          python -m nuitka --standalone --onefile --assume-yes-for-download --include-package=flask --include-package=werkzeug --include-package=jinja2 --include-package=click --include-package=itsdangerous --include-package=blinker --include-data-dir=templates=templates --include-data-dir=static=static --include-data-dir=logics=logics -o GUI.bin GUI.py
+
+      # Packaging the Linux binary as a standalone Debian .deb package
+      - name: Create Debian Package (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          mkdir -p package/usr/local/bin
+          mkdir -p package/DEBIAN
+          cp GUI.bin package/usr/local/bin/calculator
+
+          cat <<EOF > package/DEBIAN/control
+          Package: calculator
+          Version: 1.0.0
+          Section: custom
+          Priority: optional
+          Architecture: amd64
+          Essential: no
+          Maintainer: Eyob <eyobzefere01@gmail.com>
+          Description: Calculator local web application desktop interface.
+          EOF
+
+          dpkg-deb --build package calculator.deb
+
+      - name: Upload Desktop Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: |
+            *.exe
+            *.deb

@@ -1,0 +1,293 @@
+/* ==========================================
+   GLOBAL RESETS & VARIABLE DEFINITIONS
+   ========================================== */
+
+:root {
+  --bg-dark: #0a0a0f;
+  --panel-bg: rgba(18, 18, 26, 0.7);
+  --neon-cyan: #00f2fe;
+  --neon-pink: #fe019a;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f3f3f3;
+  --font-cursive: "Comfortaa", "Fredoka", "Playwrite", cursive, sans-serif;
+}
+
+body,
+body * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  font-size: 0.9rem;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* ==========================================
+   MAIN CONTAINERS (Full Width & Height)
+   ========================================== */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0f 100%);
+  position: relative;
+}
+
+/* ==========================================
+   HEADER & RESPONSIVE FULL-SCREEN MENU
+   ========================================== */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 24px;
+  height: 60px;
+  z-index: 100;
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(10, 10, 15, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.header-container img {
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+  z-index: 110;
+  /* Keeps menu icon above the active full-screen overlay */
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+}
+
+/* Default state of the menu (hidden & collapsed) */
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 10, 15, 0.98);
+  backdrop-filter: blur(25px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 105;
+  transform: translateY(-20px);
+}
+
+/* Active Class (When menu is toggled open) */
+.main-header.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Fancy cursive font styling for menu items */
+.main-header a,
+.main-header li a {
+  font-family: var(--font-cursive);
+  font-size: 2.2rem !important;
+  /* Large, modern overlay text */
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: var(--text-primary);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.main-header a:hover,
+.main-header li a:hover {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+  transform: scale(1.1);
+}
+
+/* ==========================================
+   THE DISPLAY AREA (Sleek sci-fi look)
+   ========================================== */
+.display-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 30px;
+  font-size: 3rem !important;
+  /* Big dynamic result text */
+  font-weight: 200;
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+  background: rgba(18, 18, 26, 0.25);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* ==========================================
+   CALCULATOR BUTTON GRID (100% Space Filling)
+   ========================================== */
+.calculator-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  height: calc(100vh - 200px);
+  /* Adjusts to fit exactly below header and display */
+  width: 100%;
+}
+
+/* Base button styling */
+.calculator-container button {
+  background: var(--panel-bg);
+  border: 1px solid var(--glass-border);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.calculator-container button img {
+  height: 20px;
+  width: 20px;
+  opacity: 0.85;
+}
+
+/* Hover & Active Micro-interactions */
+.calculator-container button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease-out;
+}
+
+.calculator-container button:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Specific interactive button colors */
+.calculator-container button:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+
+/* Operator Buttons (+, -, *, /, =) */
+.oBtn,
+.rBtn {
+  color: var(--neon-cyan) !important;
+  font-weight: 500;
+}
+
+.calculator-container button.oBtn:hover {
+  background: rgba(0, 242, 254, 0.05);
+  text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+/* Equal Button Special Highlight */
+.rBtn {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.15) 0%, rgba(254, 1, 154, 0.15) 100%) !important;
+  color: #fff !important;
+  border: 1px solid rgba(0, 242, 254, 0.3) !important;
+}
+
+.rBtn:hover {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.3) 0%, rgba(254, 1, 154, 0.3) 100%) !important;
+  box-shadow: inset 0 0 15px rgba(0, 242, 254, 0.4);
+  text-shadow: 0 0 8px #fff;
+}
+
+/* Clear / Backspace Buttons */
+.pcBtn,
+.fcBtn {
+  color: var(--neon-pink) !important;
+}
+
+.calculator-container button.pcBtn:hover,
+.calculator-container button.fcBtn:hover {
+  background: rgba(254, 1, 154, 0.05);
+  text-shadow: 0 0 10px var(--neon-pink);
+}
+
+/* ==========================================
+   THE DISPLAY AREA (Sleek sci-fi terminal)
+   ========================================== */
+.display-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+  /* Keeps the input pinned to the bottom of the display area */
+  padding: 20px 30px;
+  background: rgba(18, 18, 26, 0.3);
+  border-bottom: 1px solid var(--glass-border);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Futuristic Scanline Effect on the Display (Optional but very cool) */
+.display-container::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  /* Allows clicks to pass through to the input */
+}
+
+/* The actual Input Field */
+#display {
+  width: 100%;
+  height: auto;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+
+  /* Right-align numeric inputs */
+  text-align: right;
+
+  /* Science-fiction styling details */
+  font-family: 'Courier New', Courier, monospace;
+  /* Digital terminal style */
+  font-size: 3.5rem !important;
+  /* Huge, highly visible font */
+  font-weight: 300;
+  letter-spacing: 2px;
+
+  /* The professional touch: A strong neon cyan drop-shadow/glow */
+  text-shadow: 0 0 10px var(--neon-cyan),
+    0 0 20px rgba(0, 242, 254, 0.5);
+
+  z-index: 5;
+  cursor: default;
+  /* Since it's a calculator display, standard text selection cursor is hidden */
+}
+
+/* Prevent zoom-in behaviors on mobile safari/chrome when focused */
+@media (max-width: 768px) {
+  #display {
+    font-size: 2.8rem !important;
+  }
+}
