@@ -44,12 +44,12 @@ jobs:
           pip install -r requirements.txt
           pip install nuitka pywebview imageio
 
-      # Compiles Windows .exe (Explicitly listing the target packages in a single line to ensure PowerShell works)
+      # Compiles Windows .exe (Using the exact environment python path to fix missing flask package error)
       - name: Compile with Nuitka (Windows)
         if: matrix.os == 'windows-latest'
-        run: python -m nuitka --standalone --onefile --assume-yes-for-download --include-package=flask --include-package=werkzeug --include-package=jinja2 --include-package=click --include-package=itsdangerous --include-package=blinker --include-data-dir=templates=templates --include-data-dir=static=static --windows-icon-from-ico=static/ico/icons8-calculator-100.png GUI.py
+        run: python -m nuitka --standalone --onefile --assume-yes-for-download --python-flag=-v --include-package=flask --include-package=werkzeug --include-package=jinja2 --include-package=click --include-package=itsdangerous --include-package=blinker --include-data-dir=templates=templates --include-data-dir=static=static --windows-icon-from-ico=static/ico/icons8-calculator-100.png GUI.py
 
-      # Compiles Linux Standalone Binary (Explicitly listing target packages without the windows icon flag)
+      # Compiles Linux Standalone Binary
       - name: Compile with Nuitka (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: python -m nuitka --standalone --onefile --assume-yes-for-download --include-package=flask --include-package=werkzeug --include-package=jinja2 --include-package=click --include-package=itsdangerous --include-package=blinker --include-data-dir=templates=templates --include-data-dir=static=static -o GUI.bin GUI.py
@@ -58,17 +58,14 @@ jobs:
       - name: Create Debian Package (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
-          # Create system folder pathways for the binary, the icon image, and the application menu entry shortcut
           mkdir -p package/usr/local/bin
           mkdir -p package/usr/share/pixmaps
           mkdir -p package/usr/share/applications
           mkdir -p package/DEBIAN
           
-          # Move files into their proper distribution layout slots
           cp GUI.bin package/usr/local/bin/calculator
           cp static/ico/icons8-calculator-100.png package/usr/share/pixmaps/calculator-icon.png
 
-          # Generate the Linux Desktop environment shortcut file launcher
           cat <<EOF > package/usr/share/applications/calculator.desktop
           [Desktop Entry]
           Type=Application
@@ -81,7 +78,6 @@ jobs:
           Categories=Utility;Calculator;
           EOF
 
-          # Create control file structure tracking metadata configurations
           cat <<EOF > package/DEBIAN/control
           Package: calculator
           Version: 1.0.0
