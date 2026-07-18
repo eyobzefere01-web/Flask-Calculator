@@ -44,15 +44,15 @@ jobs:
           pip install -r requirements.txt
           pip install nuitka pywebview imageio
 
-      # Compiles Windows .exe with custom icon and requirements matching (Single line format for PowerShell compatibility)
+      # Compiles Windows .exe with the proper Nuitka requirements plugin flags
       - name: Compile with Nuitka (Windows)
         if: matrix.os == 'windows-latest'
-        run: python -m nuitka --standalone --onefile --assume-yes-for-download --include-package-from-requirements=requirements.txt --include-data-dir=templates=templates --include-data-dir=static=static --windows-icon-from-ico=static/ico/icons8-calculator-100.png GUI.py
+        run: python -m nuitka --standalone --onefile --assume-yes-for-download --enable-plugin=packages --include-requirements=requirements.txt --include-data-dir=templates=templates --include-data-dir=static=static --windows-icon-from-ico=static/ico/icons8-calculator-100.png GUI.py
 
-      # Compiles Linux Standalone Binary (Single line format for Bash compatibility)
+      # Compiles Linux Standalone Binary with the proper Nuitka requirements plugin flags
       - name: Compile with Nuitka (Linux)
         if: matrix.os == 'ubuntu-latest'
-        run: python -m nuitka --standalone --onefile --assume-yes-for-download --include-package-from-requirements=requirements.txt --include-data-dir=templates=templates --include-data-dir=static=static -o GUI.bin GUI.py
+        run: python -m nuitka --standalone --onefile --assume-yes-for-download --enable-plugin=packages --include-requirements=requirements.txt --include-data-dir=templates=templates --include-data-dir=static=static -o GUI.bin GUI.py
 
       # Packaging the Linux binary as a standalone Debian .deb package
       - name: Create Debian Package (Linux)
